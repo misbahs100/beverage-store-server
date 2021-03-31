@@ -29,11 +29,19 @@ client.connect(err => {
     })
   })
 
-   // read from database
+   // read all from database
    app.get('/beverages', (req, res) => {
     beverageCollection.find()
     .toArray( (err, documents) => {
       res.send(documents);
+    })
+  })
+
+  // read one beverage
+  app.get('/beverage/:id', (req, res) => {
+    beverageCollection.find({_id: ObjectId(req.params.id)})
+    .toArray( (err, documents) => {
+      res.send(documents[0])
     })
   })
 
