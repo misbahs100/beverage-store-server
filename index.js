@@ -17,8 +17,9 @@ app.use(bodyParser.json())
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const beverageCollection = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION}`);
+  const ordersCollection = client.db(`${process.env.DB_NAME}`).collection(`order`);
   
-  // add/create to database
+  // add beverage to database
   app.post('/addBeverage', (req, res) => {
     const newEvent = req.body;
     console.log('add', newEvent);
@@ -29,6 +30,15 @@ client.connect(err => {
     })
   })
 
+  // add orders to database
+  app.post('/addOrder', (req, res) => {
+    const order = req.body;
+    ordersCollection.insertOne(order)
+        .then(result => {
+            console.log("happy: ",result.insertedCount > 0);
+        })
+})
+
    // read all from database
    app.get('/beverages', (req, res) => {
     beverageCollection.find()
@@ -37,7 +47,7 @@ client.connect(err => {
     })
   })
 
-  // read one beverage
+  // read one(individual id) beverage from database
   app.get('/beverage/:id', (req, res) => {
     beverageCollection.find({_id: ObjectId(req.params.id)})
     .toArray( (err, documents) => {
@@ -45,13 +55,23 @@ client.connect(err => {
     })
   })
 
+  // read some(matched email) from database
+  app.get('/orders/:email', (req, res) => {
+    ordersCollection.find({email: req.params.email})
+    .toArray( (err, documents) => {
+      console.log("docss: ",documents)
+      res.send(documents)
+    })
+  })
+
+  
 //   client.close();
 });
 
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Welcome to Beverage Store!')
 })
 
 const port = process.env.PORT || 5055;
