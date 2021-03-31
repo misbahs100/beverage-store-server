@@ -29,6 +29,14 @@ client.connect(err => {
     })
   })
 
+   // read from database
+   app.get('/beverages', (req, res) => {
+    beverageCollection.find()
+    .toArray( (err, documents) => {
+      res.send(documents);
+    })
+  })
+
 //   client.close();
 });
 
