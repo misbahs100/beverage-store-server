@@ -16,8 +16,8 @@ app.use(bodyParser.json())
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
-  const beverageCollection = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION}`);
-  const ordersCollection = client.db(`${process.env.DB_NAME}`).collection(`order`);
+  const beverageCollection = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION1}`);
+  const ordersCollection = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION2}`);
   
   // add beverage to database
   app.post('/addBeverage', (req, res) => {
