@@ -64,13 +64,22 @@ client.connect(err => {
     })
   })
 
-  // delete
-  app.delete('/deleteBeverage/:id', (req, res) => {
+  // delete one from orders collection
+  app.delete('/orders/deleteBeverage/:id', (req, res) => {
     ordersCollection.deleteOne({_id: ObjectId(req.params.id)})
     .then(result => {
       console.log(result);
       res.send(result.deletedCount > 0);
     })
+})
+
+ // delete one from beverages collection
+ app.delete('/beverages/deleteBeverage/:id', (req, res) => {
+  beverageCollection.deleteOne({_id: ObjectId(req.params.id)})
+  .then(result => {
+    console.log(result);
+    res.send(result.deletedCount > 0);
+  })
 })
 
   
