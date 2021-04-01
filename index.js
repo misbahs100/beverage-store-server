@@ -55,7 +55,7 @@ client.connect(err => {
     })
   })
 
-  // read some(matched email) from database
+  // read some(matched email) beverages from database
   app.get('/orders/:email', (req, res) => {
     ordersCollection.find({email: req.params.email})
     .toArray( (err, documents) => {
@@ -63,6 +63,15 @@ client.connect(err => {
       res.send(documents)
     })
   })
+
+  // delete
+  app.delete('/deleteBeverage/:id', (req, res) => {
+    ordersCollection.deleteOne({_id: ObjectId(req.params.id)})
+    .then(result => {
+      console.log(result);
+      res.send(result.deletedCount > 0);
+    })
+})
 
   
 //   client.close();
